@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Project Pulse</h1>
+    <p class="subtitle">A friendly, at-a-glance status board for every project our contributors care about.</p>
+  </header>
+
+  <main class="dashboard" id="dashboard">
+    <p class="empty-state" hidden>No projects yet. Check back soon or add one to get started.</p>
+    <p class="error-state" hidden>We couldn't load project data right now. Please try refreshing the page.</p>
+
+    <section class="project-grid" id="project-grid" aria-label="Project status cards">
+      <!-- Coder: project-card elements cloned from #project-card-template will be inserted here -->
+    </section>
+  </main>
+
+  <template id="project-card-template">
+    <article class="project-card">
+      <header class="project-card__header">
+        <h2 class="project-card__name">Project Name</h2>
+        <p class="project-card__owner">Owner: <span class="project-card__owner-name">Unknown</span></p>
+      </header>
+
+      <div class="project-card__meta">
+        <span class="status-badge">
+          <span class="status-badge__label">Status</span>
+        </span>
+        <span class="priority">
+          <span class="priority__label">Priority</span>
+        </span>
+      </div>
+
+      <p class="recent-activity">
+        <span class="recent-activity__label">Recent activity:</span>
+        <span class="recent-activity__text">No recent activity.</span>
+      </p>
+    </article>
+  </template>
+
+  <script>
+    (function () {
+      document.addEventListener('DOMContentLoaded', function () {
+        var grid = document.getElementById('project-grid');
+        var emptyState = document.querySelector('.empty-state');
+        var errorState = document.querySelector('.error-state');
+        var template = document.getElementById('project-card-template');
+
+        var statusModifiers = {
+          'on track': 'status-badge--on-track',
+          'at risk': 'status-badge--at-risk',
+          'blocked': 'status-badge--blocked',
+          'complete': 'status-badge--complete'
+        };
+
+        var priorityModifiers = {
+          'high': 'priority--high',
+          'medium': 'priority--medium',
+          'low': 'priority--low'
+        };
+
+        function showError() {
+          if (errorState) errorState.hidden = false;
+          if (emptyState) emptyState.hidden = true;
+        }
+
+        function showEmpty() {
+          if (emptyState) emptyState.hidden = false;
+          if (errorState) errorState.hidden = true;
+        }
+
+        function renderProject(project) {
+          var card = template.content.firstElementChild.cloneNode(true);
+
+          var nameEl = card.querySelector('.project-card__name');
+          if (nameEl) nameEl.textContent = project.name || 'Untitled Project';
+
+          var ownerEl = card.querySelector('.project-card__owner-name');
+          if (ownerEl) ownerEl.textContent = project.owner || 'Unknown';
+
+          var statusEl = card.querySelector('.status-badge');
+          var statusLabelEl = card.querySelector('.status-badge__label');
+          var statusText = project.status || 'Unknown';
+          var statusKey = statusText.toLowerCase();
+          if (statusEl && statusModifiers[statusKey]) {
+            statusEl.classList.add(statusModifiers[statusKey]);
+          }
+          if (statusLabelEl) statusLabelEl.textContent = statusText;
+
+          var priorityEl = card.querySelector('.priority');
+          var priorityLabelEl = card.querySelector('.priority__label');
+          var priorityText = project.priority || 'Unspecified';
+          var priorityKey = priorityText.toLowerCase();
+          if (priorityEl && priorityModifiers[priorityKey]) {
+            priorityEl.classList.add(priorityModifiers[priorityKey]);
+          }
+          if (priorityLabelEl) priorityLabelEl.textContent = priorityText;
+
+          var activityEl = card.querySelector('.recent-activity__text');
+          if (activityEl) activityEl.textContent = project.recentActivity || 'No recent activity.';
+
+          grid.appendChild(card);
+        }
+
+        fetch('project-data.json')
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('Failed to load project data: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(function (data) {
+            if (!data || !Array.isArray(data.projects)) {
+              showError();
+              return;
+            }
+
+            if (data.projects.length === 0) {
+              showEmpty();
+              return;
+            }
+
+            data.projects.forEach(renderProject);
+          })
+          .catch(function () {
+            showError();
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "projects": [
+    {
+      "name": "Nebula Onboarding Revamp",
+      "owner": "Priya Nair",
+      "status": "On Track",
+      "recentActivity": "Merged PR #482 refactoring auth module",
+      "priority": "High"
+    },
+    {
+      "name": "Data Pipeline Migration",
+      "owner": "Marcus Chen",
+      "status": "At Risk",
+      "recentActivity": "Delayed by upstream schema changes; retry scheduled",
+      "priority": "High"
+    },
+    {
+      "name": "Mobile App Redesign",
+      "owner": "Sofia Alvarez",
+      "status": "Blocked",
+      "recentActivity": "Waiting on design sign-off from stakeholders",
+      "priority": "Medium"
+    },
+    {
+      "name": "Internal Docs Overhaul",
+      "owner": "Jamal Whitfield",
+      "status": "Complete",
+      "recentActivity": "Published final revision to the docs portal",
+      "priority": "Low"
+    },
+    {
+      "name": "Customer Feedback Dashboard",
+      "owner": "Emily Zhou",
+      "status": "On Track",
+      "recentActivity": "Added weekly trend chart and export button",
+      "priority": "Medium"
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+/* ==========================================================================
+   Project Pulse — Dashboard Styles
+   ========================================================================== */
+
+:root {
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-text: #1c2430;
+  --color-text-muted: #4b5768;
+  --color-border: #e1e6ef;
+  --color-accent: #3554d1;
+
+  /* Status colors — text/background pairs chosen for WCAG AA contrast (>= 4.5:1) */
+  --status-on-track-bg: #d8f5e3;
+  --status-on-track-text: #0f5c33;
+
+  --status-at-risk-bg: #fdecc8;
+  --status-at-risk-text: #7a4a00;
+
+  --status-blocked-bg: #fbdada;
+  --status-blocked-text: #8a1414;
+
+  --status-complete-bg: #dbe6fb;
+  --status-complete-text: #1d3a8a;
+
+  /* Priority accent colors */
+  --priority-high-bg: #fde2e2;
+  --priority-high-text: #971b1b;
+
+  --priority-medium-bg: #fdf0d5;
+  --priority-medium-text: #8a5a00;
+
+  --priority-low-bg: #e3f2e9;
+  --priority-low-text: #1e6b3d;
+
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-card: 0 2px 6px rgba(20, 30, 60, 0.08), 0 8px 24px rgba(20, 30, 60, 0.06);
+  --shadow-card-hover: 0 4px 10px rgba(20, 30, 60, 0.12), 0 12px 32px rgba(20, 30, 60, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Visible focus outline for any focusable/interactive element */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.site-header {
+  padding: 2rem 1.5rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.site-header h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.site-header .subtitle {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  max-width: 60ch;
+}
+
+/* ==========================================================================
+   Dashboard container
+   ========================================================================== */
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.empty-state,
+.error-state {
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.error-state {
+  background-color: var(--status-blocked-bg);
+  color: var(--status-blocked-text);
+  border: 1px solid var(--status-blocked-text);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Project grid — responsive: multi-column on desktop, single-column ~320px
+   ========================================================================== */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Project card
+   ========================================================================== */
+
+.project-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.project-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.project-card__name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.project-card__owner {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.project-card__owner-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.project-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Status badge — color is a supplement to the visible text label
+   ========================================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.status-badge--on-track {
+  background-color: var(--status-on-track-bg);
+  color: var(--status-on-track-text);
+}
+
+.status-badge--at-risk {
+  background-color: var(--status-at-risk-bg);
+  color: var(--status-at-risk-text);
+}
+
+.status-badge--blocked {
+  background-color: var(--status-blocked-bg);
+  color: var(--status-blocked-text);
+}
+
+.status-badge--complete {
+  background-color: var(--status-complete-bg);
+  color: var(--status-complete-text);
+}
+
+/* ==========================================================================
+   Priority indicator — color is a supplement to the visible text label
+   ========================================================================== */
+
+.priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.priority::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.priority--high {
+  background-color: var(--priority-high-bg);
+  color: var(--priority-high-text);
+}
+
+.priority--medium {
+  background-color: var(--priority-medium-bg);
+  color: var(--priority-medium-text);
+}
+
+.priority--low {
+  background-color: var(--priority-low-bg);
+  color: var(--priority-low-text);
+}
+
+/* ==========================================================================
+   Recent activity block
+   ========================================================================== */
+
+.recent-activity {
+  margin: 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+}
+
+.recent-activity__label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-right: 0.3rem;
+}
+
+/* ==========================================================================
+   Responsive breakpoints
+   ========================================================================== */
+
+/* Small phones: force single column and tighten spacing */
+@media (max-width: 360px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-header,
+  .dashboard {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Larger desktops: allow cards to breathe a bit more */
+@media (min-width: 1024px) {
+  .project-grid {
+    gap: 1.5rem;
+  }
+}
